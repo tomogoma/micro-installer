@@ -1,0 +1,9 @@
+[Unit]
+Description=Micro Auto Atarter
+
+[Service]
+ExecStart=/usr/local/bin/micro api
+SyslogIdentifier=micro
+
+[Install]
+WantedBy=multi-user.target
