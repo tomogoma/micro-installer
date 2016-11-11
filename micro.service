@@ -1,5 +1,5 @@
 [Unit]
-Description=Micro Auto Atarter
+Description=Micro Auto Starter
 
 [Service]
 ExecStart=/usr/local/bin/micro api

@@ -4,17 +4,8 @@ APP_NAME="micro"
 APP_DIR="/usr/local/bin"
 SYSTEMD_DIR="/etc/systemd/system"
 
-function usage {
-	printf "Micro api Installer\nUsage: $1 [user]\n"
-}
-
 function install {
     cp -f "${APP_NAME}" "$APP_DIR/$APP_NAME" || exit 1
-    usr=$1
-    if [ -z "$usr" ];then
-        return
-    fi
-    chown -R "$usr:$usr" "$APP_DIR/$APP_NAME"
 }
 
 function installService {
@@ -26,7 +17,7 @@ function installService {
 ## Begin processing script
 ./systemdUninstaller.sh
 echo "Installing..."
-install $1
+install
 installService
-echo "Done!"
+echo "Done installing!"
 exit 0
