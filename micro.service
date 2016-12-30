@@ -9,4 +9,5 @@ WantedBy=multi-user.target
 [Service]
 ExecStart=/usr/local/bin/micro api
 SyslogIdentifier=micro
+RestartSec=30
 Restart=always
