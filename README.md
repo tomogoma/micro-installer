@@ -32,7 +32,7 @@ Check status
 
 Install Directories
 
-The consul binary is installed into
+The micro binary is installed into
 `/usr/local/bin/micro`
 
 A systemd service unit file is created at
