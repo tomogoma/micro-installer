@@ -1,5 +1,5 @@
 [Unit]
-Description=Micro Auto Starter
+Description=Micro %I Auto Starter
 After=consul.service
 Requires=consul.service
 
@@ -7,7 +7,7 @@ Requires=consul.service
 WantedBy=multi-user.target
 
 [Service]
-ExecStart=/usr/local/bin/micro api
+ExecStart=/usr/local/bin/micro %i
 SyslogIdentifier=micro
 RestartSec=30
 Restart=always

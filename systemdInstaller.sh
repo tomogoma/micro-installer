@@ -10,8 +10,9 @@ function install {
 
 function installService {
 	mkdir -p "$SYSTEMD_DIR" || exit 1
-	cp -f "${APP_NAME}.service" "$SYSTEMD_DIR" || exit 1
-	systemctl enable "${APP_NAME}.service" || exit 1
+	cp -f "${APP_NAME}@.service" "$SYSTEMD_DIR" || exit 1
+	systemctl enable "${APP_NAME}@web.service" || exit 1
+	systemctl enable "${APP_NAME}@api.service" || exit 1
 }
 
 ## Begin processing script
