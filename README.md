@@ -19,15 +19,19 @@ $ ./systemdInstaller.sh /path/to/downloaded/consul.zip
 
 Start
 
-`$ systemctl start micro.service`
+`$ systemctl start micro@web.service`
+
+`$ systemctl start micro@api.service`
+
+`$ systemctl start micro@[name].service`
 
 Stop
 
-`$ systemctl stop micro.service`
+`$ systemctl stop micro@[name].service`
 
 Check status
 
-`$ systemctl status micro.service`
+`$ systemctl status micro@[name].service`
 
 
 Install Directories
@@ -36,7 +40,7 @@ The micro binary is installed into
 `/usr/local/bin/micro`
 
 A systemd service unit file is created at
-`/etc/systemd/system/micro.service`
+`/etc/systemd/system/micro@.service`
 
 ## Uninstall ##
 
@@ -55,9 +59,9 @@ If your service depends on consul, in the service’s unit file add the followin
 
 ...
 
-After=micro.service
+After=micro@[name].service
 
-Requires=micro.service
+Requires=micro@[name].service
 
 ...
 ```
