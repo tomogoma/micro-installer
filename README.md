@@ -42,6 +42,22 @@ The micro binary is installed into
 A systemd service unit file is created at
 `/etc/systemd/system/micro@.service`
 
+## Configuring ##
+
+To change config values e.g. change listening address, append the relevant environment
+variable to `/etc/systemd/system/micro@.service`
+e.g.
+```
+[Service]
+Environment=MICRO_API_ADDRESS=0.0.0.0:8089 "ANOTHER_ENV_VAR=some value"
+...
+```
+Once done, perform a daemon reload for changes to take effect:
+```
+systemctl daemon-reload
+```
+
+
 ## Uninstall ##
 
 `$ cd /path/to/consul-installer`
