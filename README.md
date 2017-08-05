@@ -1,6 +1,6 @@
-# Consul Installer #
+# Micro Installer #
 
-An auto-installer of go-micro api [Hashi Corp](https://www.consul.io) as a service in linux systems
+An auto-installer of [micro](https://github.com/micro/micro) as a service in linux systems
 
 
 ## Install ##
@@ -8,9 +8,9 @@ An auto-installer of go-micro api [Hashi Corp](https://www.consul.io) as a servi
 Currently only systemd is supported
 
 ```
-$ git clone https://github.com/tomogoma/consul-installer
-$ cd consul-installer
-$ ./systemdInstaller.sh /path/to/downloaded/consul.zip
+$ git clone https://github.com/tomogoma/micro-installer
+$ cd micro-installer
+$ ./systemdInstaller.sh
 ```
 
 
@@ -60,14 +60,14 @@ systemctl daemon-reload
 
 ## Uninstall ##
 
-`$ cd /path/to/consul-installer`
+`$ cd /path/to/micro-installer`
 
 `$ ./systemdUninstaller.sh`
 
 
 ## Configure a dependent systemd service ##
 
-If your service depends on consul, in the service’s unit file add the following lines:
+If your service depends on micro, in the service’s unit file add the following lines:
 
 
 ```
