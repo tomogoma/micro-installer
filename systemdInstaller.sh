@@ -1,24 +1,14 @@
 #!/bin/bash
 
-APP_NAME="micro"
-APP_DIR="/usr/local/bin"
-SYSTEMD_DIR="/etc/systemd/system"
-
-function install {
-    cp -f "${APP_NAME}" "$APP_DIR/$APP_NAME" || exit 1
-}
+source vars.sh
 
 function installService {
-	mkdir -p "$SYSTEMD_DIR" || exit 1
-	cp -f "${APP_NAME}@.service" "$SYSTEMD_DIR" || exit 1
-	systemctl enable "${APP_NAME}@web.service" || exit 1
-	systemctl enable "${APP_NAME}@api.service" || exit 1
+    for f in ${UNITS}
+    do
+	    cp -f "${f}" "$SYSTEMD_DIR" || exit 1
+	    systemctl enable "$(basename ${f})" || exit 1
+    done
 }
 
-## Begin processing script
-./systemdUninstaller.sh
-echo "Installing..."
-install
+cp -f "${BUILD_EXEC}" "${INSTALL_FILE}" || exit 1
 installService
-echo "Done installing!"
-exit 0

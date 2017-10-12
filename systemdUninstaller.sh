@@ -1,18 +1,19 @@
 #!/bin/bash
 
-APP_NAME="micro"
-APP_FILE="/usr/local/bin/$APP_NAME"
-SYSTEMD_FILE="/etc/systemd/system/${APP_NAME}@.service"
+source vars.sh
 
-echo "Uninstalling..."
-if [ -f "$SYSTEMD_FILE" ]; then
-	systemctl stop ${APP_NAME}@web.service >/dev/null
-	systemctl stop ${APP_NAME}@api.service >/dev/null
-	rm -f "$SYSTEMD_FILE"
-fi
-if [ -f "$APP_FILE" ]; then
-	rm -f "$APP_FILE"
-fi
+for f in ${UNITS}
+do
+    sysDF="${SYSTEMD_DIR}/$(basename ${f})"
+    if [ -f "$sysDF" ]; then
+        systemctl stop ${f} >/dev/null
+        rm -f ${sysDF} || exit 1
+    fi
+done
+
 systemctl daemon-reload
-echo "Uninstall complete!"
-exit 0
+
+if [ -f "$INSTALL_FILE" ]; then
+	rm -f "$INSTALL_FILE" || exit 1
+fi
+

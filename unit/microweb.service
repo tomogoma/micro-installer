@@ -1,0 +1,13 @@
+[Unit]
+Description=Micro web Auto Starter
+After=consul.service
+Requires=consul.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+ExecStart=/usr/local/bin/micro web
+SyslogIdentifier=microweb
+RestartSec=30
+Restart=always
