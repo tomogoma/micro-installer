@@ -12,19 +12,21 @@ for the micro commands provided during build.
 To run the build, you need a fully set up go runtime and working GOPATH.
 Documentation here: https://golang.org/doc/install
 
-## Install ##
-
-You may skip The Build step in case you want to use prebuilt versions of the 
-unit files and binary - the micro binary may be older than the latest release -
-they include `micro web` as `microweb.service` and `micro api` as
-`microapi.service`.
+## Install micro ##
 
 1. Clone the repository and cd into it
     ```
     $ git clone https://github.com/tomogoma/micro-installer
     $ cd micro-installer
     ```
-2. Build the installer with the micro commands you wish to have unit files for
+2. Build the installer.
+
+    > You may skip this step in case you want to use prebuilt versions of the 
+    unit files and binary - the binary may be older than the latest release.
+    Prebuilt versions include the `micro` binary and `micro api`'s unit file
+    as `microapi.service`.
+    
+    Build the installer with the micro commands you wish to have unit files for
 e.g. to build for `micro api` and `micro web` run:
     ```
     make build commands="api web"
