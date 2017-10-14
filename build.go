@@ -70,10 +70,10 @@ func initVars() error {
 }
 
 func fetchMicro() error {
-	//cmd := exec.Command("go", "get", "-u", microRepo)
-	//if out, err := cmd.CombinedOutput(); err != nil {
-	//	return errors.Newf("%v: %s", err, out)
-	//}
+	cmd := exec.Command("go", "get", "-u", microRepo)
+	if out, err := cmd.CombinedOutput(); err != nil {
+		return errors.Newf("%v: %s", err, out)
+	}
 	return nil
 }
 
