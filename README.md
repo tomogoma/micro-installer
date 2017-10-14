@@ -15,7 +15,7 @@ Documentation here: https://golang.org/doc/install
 ## Install ##
 
 You may skip The Build step in case you want to use prebuilt versions of the 
-unit files and binary - these may not be the latest version of micro released -
+unit files and binary - the micro binary may be older than the latest release -
 they include `micro web` as `microweb.service` and `micro api` as
 `microapi.service`.
 
@@ -39,24 +39,24 @@ e.g. to build for `micro api` and `micro web` run:
 ## Install outcome ##
 
 
-Start
+### Start
 
 `$ systemctl start micro[command].service`
 e.g.
-`$ systemctl start micro@api.service`
+`$ systemctl start microapi.service`
 
 
-Stop
+### Stop
 
 `$ systemctl stop micro[command].service`
 
 
-Check status
+### Check status
 
 `$ systemctl status micro[command].service`
 
 
-Install Directories
+### Install Directories
 
 The micro binary is installed into
 `/usr/local/bin/micro`
