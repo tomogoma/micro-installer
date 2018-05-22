@@ -10,6 +10,8 @@ import (
 	"text/template"
 
 	"github.com/tomogoma/go-typed-errors"
+	"sort"
+	"strconv"
 )
 
 const (
@@ -88,6 +90,13 @@ func buildMicro() error {
 		return errors.Newf("listing micro's git release tags: %v: %s", err, out)
 	}
 	origiBranch := strings.TrimSpace(strings.TrimPrefix(string(out), "* "))
+	defer func() {
+		cmd = exec.Command("git", "checkout", origiBranch)
+		cmd.Dir = repoDir
+		if out, err := cmd.CombinedOutput(); err != nil {
+			log.Printf("Unable to checkout original %s branch: %v: %s", repoDir, err, out)
+		}
+	}()
 
 	cmd = exec.Command("git", "tag", "-l")
 	cmd.Dir = repoDir
@@ -99,33 +108,53 @@ func buildMicro() error {
 	if len(tags) == 0 {
 		return errors.New("unexpected: no tags found in the micro repository")
 	}
-	latest := tags[0]
-	for _, tag := range tags[1:] {
-		if strings.Compare(latest, tag) > 0 {
+	// start with the latest release
+	sort.Slice(tags, func(i, j int) bool {
+		as, err := decomposeSemVer(tags[i])
+		if err != nil {
+			return false
+		}
+		bs, err := decomposeSemVer(tags[j])
+		if err != nil {
+			return true
+		}
+		for k := 0; k < 3; k++ {
+			if as[k] == bs[k] {
+				continue
+			}
+			return as[k] > bs[k]
+		}
+		return false
+	})
+	// format for tags git checkout
+	for i, tag := range tags {
+		tags[i] = "tags/" + tag
+	}
+	// fallback to original branch in case all tags fail to build
+	tags = append(tags, origiBranch)
+
+	// Keep trying building tags until a successful build
+	for _, tag := range tags {
+
+		cmd = exec.Command("git", "checkout", tag)
+		cmd.Dir = repoDir
+		if out, err = cmd.CombinedOutput(); err != nil {
+			err = errors.Newf("checkout release at %s: %v: %s", tag, err, out)
+			log.Printf("Unable to checkout release at %s", tag)
 			continue
 		}
-		latest = tag
+
+		cmd = exec.Command("go", "build", "-o", buildFile)
+		cmd.Dir = repoDir
+		if out, err = cmd.CombinedOutput(); err != nil {
+			err = errors.Newf("build release at %s: %v: %s", tag, err, out)
+			log.Printf("Unable to build release at %s", tag)
+			continue
+		}
+		return nil
 	}
 
-	cmd = exec.Command("git", "checkout", "tags/"+latest)
-	cmd.Dir = repoDir
-	if out, err := cmd.CombinedOutput(); err != nil {
-		return errors.Newf("checkout latest release: %v: %s", err, out)
-	}
-
-	cmd = exec.Command("go", "build", "-o", buildFile)
-	cmd.Dir = repoDir
-	if out, err := cmd.CombinedOutput(); err != nil {
-		return errors.Newf("%v: %s", err, out)
-	}
-
-	cmd = exec.Command("git", "checkout", origiBranch)
-	cmd.Dir = repoDir
-	if out, err := cmd.CombinedOutput(); err != nil {
-		return errors.Newf("%v: %s", err, out)
-	}
-
-	return nil
+	return err
 }
 
 func buildUnit(forCommand string) error {
@@ -155,4 +184,32 @@ func buildUnit(forCommand string) error {
 	}
 
 	return nil
+}
+
+// decomposeSemVer breaks a semantic version into a slice of its
+// constituent version numbers. The slice always has 3 values
+// major version, minor version and patch version in this order.
+// If the version missed one, it is filled by a zero.
+// e.g. all these will return the slice [0,1,0]:
+//     v0.1.0
+//     v0.1
+//     0.1.0
+func decomposeSemVer(ver string) ([]int, error) {
+	ver = strings.TrimPrefix(ver, "v")
+	aStrs := strings.Split(ver, ".")
+	var as []int
+	for _, aStr := range aStrs {
+		a, err := strconv.Atoi(aStr)
+		if err != nil {
+			return nil, errors.Newf("found none int in semantic version")
+		}
+		as = append(as, a)
+	}
+	if len(as) > 3 {
+		return nil, errors.Newf("semantic version too long")
+	}
+	for i := len(as); i < 3; i++ {
+		as = append(as, 0)
+	}
+	return as, nil
 }
