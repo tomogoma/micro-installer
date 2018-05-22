@@ -9,7 +9,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/tomogoma/go-commons/errors"
+	"github.com/tomogoma/go-typed-errors"
 )
 
 const (

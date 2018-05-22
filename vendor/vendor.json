@@ -1,0 +1,19 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "qekNouYjoxRxaEZeD6GtySY1wlM=",
+			"path": "github.com/jpillora/backoff",
+			"revision": "8eab2debe79d12b7bd3d10653910df25fa9552ba",
+			"revisionTime": "2017-09-18T00:21:02Z"
+		},
+		{
+			"checksumSHA1": "BqXoSZ2odOZWs17c55KcFUhv2xY=",
+			"path": "github.com/tomogoma/go-typed-errors",
+			"revision": "b1681d99427955beaa68b0312ff3e641cdda78e1",
+			"revisionTime": "2018-03-06T14:01:03Z"
+		}
+	],
+	"rootPath": "github.com/tomogoma/micro-installer"
+}
