@@ -3,40 +3,70 @@
 An auto-installer of [micro](https://github.com/micro/micro) as a service in
 systemd systems.
 
-The scripts `go get` the micro repository, checkout the latest release branch
-and build an executable to be installed. SystemD unit files are also created
-for the micro commands provided during build.
+# Installation Instructions #
 
-## Pre-requisite ##
+There are two approaches to install:
 
-To run the build, you need a fully set up go runtime and working GOPATH.
-Documentation here: https://golang.org/doc/install
+1. [Install pre-compiled micro binary](#install-precompiled-micro-binary) (straight forward approach)
+    
+    Notes:
+    
+    1. Most services can safely use this approach.
+    1. This is not guaranteed to use the latest version of micro
+    as it uses a precompiled binary.
+    1. The installer installs `micro web` and `micro api`,
+    if your service requires other `micro` products then
+    it's best to use the [build and install](#build-and-install-the-latest-release-of-micro)
+    approach - this gives you more options.
+1. [Build and install the latest release of the micro binary](#build-and-install-the-latest-release-of-micro)
+(you will need to have the go compiler installed to achieve this approach)
 
-## Install micro ##
+## Install Precompiled micro binary ##
 
 1. Clone the repository and cd into it
     ```
     $ git clone https://github.com/tomogoma/micro-installer
     $ cd micro-installer
     ```
-2. Build the installer.
-
-    > You may skip this step in case you want to use prebuilt versions of the 
-    unit files and binary - the binary may be older than the latest release.
-    Prebuilt versions include the `micro` binary and `micro api`'s unit file
-    as `microapi.service`.
+1. Install `micro` together with the respective unit files:
+    ```
+    sudo make install
+    ```
+    This installs the `web` and `api` commands.
+    See the [Install outcome](#install-outcome) section for next steps.
     
-    Build the installer with the micro commands you wish to have unit files for
+## Build and install the latest release of micro ##
+
+### Prerequisite ###
+
+To run the build, you need a fully set up go runtime and working GOPATH.
+Instructions here: https://golang.org/doc/install
+
+This is because the build scripts use `go get` to fetch the micro repository,
+checkout the latest release branch and build an executable to be installed.
+SystemD unit files are also created for the micro commands provided during build.
+
+### Procedure ###
+
+1. Clone the repository and cd into it
+    ```
+    $ git clone https://github.com/tomogoma/micro-installer
+    $ cd micro-installer
+    ```
+1. Build the installer.
+Build the installer with the micro commands you wish to have unit files for
 e.g. to build for `micro api` and `micro web` run:
     ```
     make build commands="api web"
     ```
     A `micro` executable is created at `bin/micro` while the respective unit files
     are created inside the `unit` directory
-3. Install `micro` together with the respective unit files:
+1. Install the build outcome:
     ```
     sudo make install
     ```
+    This installs the commands provided during the build step.
+    See the [Install outcome](#install-outcome) section for next steps.
     
 ## Install outcome ##
 
@@ -68,7 +98,10 @@ Systemd service unit files are created at
 
 ## Configuring ##
 
-To change config values e.g. change listening address, append the relevant environment
+the command `micro --help` or `micro [command] --help` provides all configuration options
+applicable.
+
+To change config values for a command e.g. change listening address, append the relevant environment
 variable to `/etc/systemd/system/micro[command].service`
 e.g.
 ```
