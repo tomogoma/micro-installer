@@ -23,10 +23,19 @@ There are two approaches to install:
 
 ## Install Precompiled micro binary ##
 
+### Prerequisite ###
+
+To run the build, you need `make` installed, easiest way to install this is:
+```
+sudo apt install build-essential
+```
+
+### Procedure ###
+
 1. Clone the repository and cd into it
     ```
-    $ git clone https://github.com/tomogoma/micro-installer
-    $ cd micro-installer
+    git clone https://github.com/tomogoma/micro-installer
+    cd micro-installer
     ```
 1. Install `micro` together with the respective unit files:
     ```
@@ -37,21 +46,28 @@ There are two approaches to install:
     
 ## Build and install the latest release of micro ##
 
-### Prerequisite ###
+### Prerequisites ###
 
-To run the build, you need a fully set up go runtime and working GOPATH.
+To run the build, you need:
+
+1. `make` installed, easiest way to install this is:
+    ```
+    sudo apt install build-essential
+    ```
+    
+1. a fully set up go runtime and working GOPATH.
 Instructions here: https://golang.org/doc/install
 
-This is because the build scripts use `go get` to fetch the micro repository,
-checkout the latest release branch and build an executable to be installed.
-SystemD unit files are also created for the micro commands provided during build.
+    This is because the build scripts use `go get` to fetch the micro repository,
+    checkout the latest release branch and build an executable to be installed.
+    SystemD unit files are also created for the micro commands provided during build.
 
 ### Procedure ###
 
 1. Clone the repository and cd into it
     ```
-    $ git clone https://github.com/tomogoma/micro-installer
-    $ cd micro-installer
+    git clone https://github.com/tomogoma/micro-installer
+    cd micro-installer
     ```
 1. Build the installer.
 Build the installer with the micro commands you wish to have unit files for
@@ -73,19 +89,19 @@ e.g. to build for `micro api` and `micro web` run:
 
 ### Start
 
-`$ systemctl start micro[command].service`
+`systemctl start micro[command].service`
 e.g.
-`$ systemctl start microapi.service`
+`systemctl start microapi.service`
 
 
 ### Stop
 
-`$ systemctl stop micro[command].service`
+`systemctl stop micro[command].service`
 
 
 ### Check status
 
-`$ systemctl status micro[command].service`
+`systemctl status micro[command].service`
 
 
 ### Install Directories
@@ -117,7 +133,7 @@ systemctl daemon-reload
 
 ## Uninstall ##
 
-`$ cd /path/to/micro-installer`
+`cd /path/to/micro-installer`
 
-`$ sudo make uninstall`
+`sudo make uninstall`
 
